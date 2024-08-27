@@ -1,41 +1,27 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function App() {
-
-const [value, setValue] = useState({count:1000,theme:"orange"});
-const count = value.count;
-const theme = value.theme;
-function increment() {
-
-  // Directly updates the value state with a new value that is one more than the current value of count.
-  // setValue(count + 1);
-  
-  // Updates the count property within the value object while preserving other properties.
-  // setValue(prevCount => prevCount + 1);
-  
-  // Updates the count property within the value object while preserving all other properties.
-  setValue(prevValue => {   return { ...prevValue, count: prevValue.count + 1}    })
-}function decrement() {
-
-  // Directly updates the value state with a new value that is one more than the current value of count.
-  // setValue(count - 1);
-
-  // Updates the count property within the value object while preserving other properties.
-  // setValue(prevCount=> prevCount - 1);
-
-  // Updates the count property within the value object while preserving all other properties.
-  setValue(prevValue => {   return { ...prevValue, count: prevValue.count - 1}    })
-}
-
+  const [responseType, setResponseType] = useState();
+  const [items, setItems] = useState([]);
+  useEffect(()=>{
+    fetch(`https://jsonplaceholder.typicode.com/${responseType}`)
+    .then(response => response.json())
+    .then(json => setItems(json))
+  },[responseType])
 
   return (
-    <div className="App">
-     <button onClick={decrement}>-</button>
-     <span>{count}</span>
-     <span>{theme}</span>
-     <button onClick={increment}>+</button>
-    </div>
+    <>
+      <div className="App">
+        <button onClick={()=>setResponseType("users")}>Users</button>
+        <button onClick={()=>setResponseType("posts")}>Post</button>
+        <button onClick={()=>setResponseType("comments")}>Comment</button>
+        <h1>{responseType}</h1>
+      </div>
+      {items.map(item  => {
+        return <pre>{JSON.stringify(item)}</pre>})}
+    </>
+    
   );
 }
 
