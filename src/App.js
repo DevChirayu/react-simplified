@@ -18,8 +18,8 @@ function App() {
         <button onClick={()=>setResponseType("comments")}>Comment</button>
         <h1>{responseType}</h1>
       </div>
-      {items.map(item  => {
-        return <pre>{JSON.stringify(item)}</pre>})}
+      {items.length > 0 ? items.map(item  => {
+        return <pre>{JSON.stringify(item)}</pre>}) : "No Data"}
     </>
     
   );
